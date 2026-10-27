@@ -1,0 +1,13 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+
+# Python Cache & Environment Variables
+__pycache__/
+*.pyc
+.env
+__pycache__/CreateFileJson.cpython-312.pyc
+.vscode/settings.json
+src/credentials.json

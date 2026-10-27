@@ -1,0 +1,61 @@
+```json
+{
+  "entities": [
+    {
+      "Id": "1",
+      "type": "Penyakit",
+      "name": "Penyakit bercak daun pada tanaman singkong"
+    },
+    {
+      "Id": "2",
+      "type": "PenyakitPenyebab",
+      "name": "Jamur Cercospora henningsii"
+    },
+    {
+      "Id": "3",
+      "type": "Gejala",
+      "name": "Bintik-bintik kecil berwarna cokelat dikelilingi halo kuning"
+    },
+    {
+      "Id": "4",
+      "type": "Solusi",
+      "name": "Fungisida berbahan aktif mankozeb"
+    }
+  ],
+  "relations": [
+    {
+      "Id": "1",
+      "subject": "1",
+      "predicate": "disebabkan oleh",
+      "object": "2"
+    },
+    {
+      "Id": "2",
+      "subject": "1",
+      "predicate": "ditandai dengan",
+      "object": "3"
+    },
+    {
+      "Id": "3",
+      "subject": "1",
+      "predicate": "dapat dikendalikan dengan",
+      "object": "4"
+    }
+  ]
+}
+``` 
+
+
+**Penjelasan:**
+
+* **entities**: Mengandung informasi tentang entitas yang ditemukan dalam teks, seperti Penyakit, Gejala, dan Solusi. Setiap entitas memiliki ID unik, tipe, dan nama.
+* **relations**: Mengandung informasi tentang hubungan antara entitas. Setiap hubungan memiliki ID unik, subjek, predikat, dan objek.
+
+**Contoh:**
+
+* Relasi "1" menunjukkan bahwa Penyakit bercak daun pada tanaman singkong (ID 1) disebabkan oleh Jamur Cercospora henningsii (ID 2).
+* Relasi "2" menunjukkan bahwa Penyakit bercak daun pada tanaman singkong (ID 1) ditandai dengan bintik-bintik kecil berwarna cokelat dikelilingi halo kuning (ID 3).
+
+
+
+Semoga penjelasan ini membantu!
