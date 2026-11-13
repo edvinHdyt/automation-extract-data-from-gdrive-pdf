@@ -15,7 +15,3 @@ if __name__ == '__main__':
     )
 
     pipline.run()
-
-  
-
-

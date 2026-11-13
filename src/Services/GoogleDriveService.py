@@ -1,17 +1,19 @@
 import os
 import io
 import re
-import pdfplumber
+import pymupdf
 from google.oauth2  import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 from utils.LoggerTrait import LoggerTrait
+from collections import Counter
+from Helper.JournalCleanHelper import JournalCleanHelper
 
 class GoogleDriveService(LoggerTrait):
     credentialPath: str
     service: build
     SCOPES: list
-
+    
     def __init__(self, credentialPath: str = "credentials.json"):
         try:
             self.SCOPES = ["https://www.googleapis.com/auth/drive"]
@@ -42,46 +44,65 @@ class GoogleDriveService(LoggerTrait):
 
         return items
 
-    def extractTxtToRamDevice(self, fileId: str) -> str:
+    def extractTxtToRamDevice(self, fileId: str,
+                                   topZone=0.08, bottomZone=0.07,
+                                   maxHeaderLen=150, minRepeat=2) -> list[str]:
         req = self.service.files().get_media(fileId=fileId)
-
         pdfBuffer = io.BytesIO()
         downloader = MediaIoBaseDownload(pdfBuffer, req)
-
         done = False
         while not done:
-            status, done = downloader.next_chunk()
+            _, done = downloader.next_chunk()
 
-        pdfBuffer.seek(0)
+        doc = pymupdf.open(stream=pdfBuffer.getvalue(), filetype="pdf")
+        try:
+            # ---------- PASS 1: baca semua halaman, tandai kandidat header/footer ----------
+            pages = []                 # list of (W, H, blocks)
+            counter = Counter()
 
-        cleanedPages = []
-        with pdfplumber.open(pdfBuffer) as pdf:
-            for page in pdf.pages:
-                tables = page.find_tables()
+            helperJournalClean = JournalCleanHelper();
 
-                # filter mengabaikan element dari tabel
-                def not_in_table(obj):
-                    for table in tables:
-                        x0, top, x1, bottom = table.bbox
-                        if(x0 <=obj["x0"]<= x1) and (top <= obj["top"] <= bottom):
-                            return False
-                    return True
+            for page in doc:
+                W, H = page.rect.width, page.rect.height
+                blocks = helperJournalClean._readBlocks(page)
+                pages.append((W, H, blocks))
 
-                pageWithoutTables = page.filter(not_in_table)
-                text = pageWithoutTables.extract_text()
+                for b in blocks:
+                    inEdge = b["y1"] < H * topZone or b["y0"] > H * (1 - bottomZone)
+                    if inEdge and len(b["text"]) <= maxHeaderLen:
+                        counter[helperJournalClean._normalize(b["text"])] += 1
 
-                if text:
-                    cleanedPages.append(text)
+            # teks tepi yang muncul >= minRepeat kali = header/footer
+            repeated = {t for t, n in counter.items() if n >= minRepeat}
 
-        pdfBuffer.close()
-        del pdfBuffer
+            # ---------- PASS 2: buang header/footer, lalu urutkan baca ----------
+            paragraphs = []
+            for W, H, blocks in pages:
+                kept = []
+                for b in blocks:
+                    inEdge = b["y1"] < H * topZone or b["y0"] > H * (1 - bottomZone)
+                    if inEdge and helperJournalClean._normalize(b["text"]) in repeated:
+                        continue
+                    kept.append(b)
+                paragraphs.extend(helperJournalClean._readingOrder(kept, W))
+
+
+            paragraphs = helperJournalClean.trimParagraphs(paragraphs)
+            paragraphs = helperJournalClean.removeCaptions(paragraphs)
+            paragraphs = helperJournalClean.joinBrokenParagraphs(paragraphs)
+
+            print(paragraphs);
+
+        finally:
+            doc.close()
+            pdfBuffer.close()
         
-        fullTxt = "\n".join(cleanedPages)
-        patternCaption = r'(?i)(Gambar|Tabel|Figure|Table)\s+\d+.*?(?=\n|$)'
-        fullTxt = re.sub(patternCaption, '', fullTxt)
+    
 
-        return fullTxt
+    
+
+    
 
 
-        
-        
+    
+    
