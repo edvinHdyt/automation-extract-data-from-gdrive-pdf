@@ -55,6 +55,7 @@ class GoogleDriveService(LoggerTrait):
             _, done = downloader.next_chunk()
 
         doc = pymupdf.open(stream=pdfBuffer.getvalue(), filetype="pdf")
+        paragraphs = []
         try:
             # ---------- PASS 1: baca semua halaman, tandai kandidat header/footer ----------
             pages = []                 # list of (W, H, blocks)
@@ -76,7 +77,6 @@ class GoogleDriveService(LoggerTrait):
             repeated = {t for t, n in counter.items() if n >= minRepeat}
 
             # ---------- PASS 2: buang header/footer, lalu urutkan baca ----------
-            paragraphs = []
             for W, H, blocks in pages:
                 kept = []
                 for b in blocks:
@@ -90,12 +90,11 @@ class GoogleDriveService(LoggerTrait):
             paragraphs = helperJournalClean.trimParagraphs(paragraphs)
             paragraphs = helperJournalClean.removeCaptions(paragraphs)
             paragraphs = helperJournalClean.joinBrokenParagraphs(paragraphs)
-
-            print(paragraphs);
-
         finally:
             doc.close()
             pdfBuffer.close()
+
+        return paragraphs
         
     
 
