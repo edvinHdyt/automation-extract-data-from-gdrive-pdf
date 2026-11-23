@@ -1,11 +1,159 @@
+({
+  "entities": [
+    {
+      "id": "1",
+      "type": "Penyakit",
+      "name": "Bercak Daun"
+    },
+    {
+      "id": "2",
+      "type": "Penyebab",
+      "name": "Alternaria brassicae"
+    },
+    {
+      "id": "3",
+      "type": "Penyebab",
+      "name": "A. brassicola"
+    },
+    {
+      "id": "4",
+      "type": "Penyebab",
+      "name": "Pseudocercosporella capsellae"
+    },
+    {
+      "id": "5",
+      "type": "Penyebab",
+      "name": "Myscosphaerella brassicicola"
+    }
+  ],
+  "relations": [
+    {
+      "id": "r1",
+      "subject": "1",
+      "predicate": "Disebabkan oleh",
+      "object": "2"
+    },
+    {
+      "id": "r2",
+      "subject": "1",
+      "predicate": "Disebabkan oleh",
+      "object": "3"
+    },
+    {
+      "id": "r3",
+      "subject": "1",
+      "predicate": "Disebabkan oleh",
+      "object": "4"
+    },
+    {
+      "id": "r4",
+      "subject": "1",
+      "predicate": "Disebabkan oleh",
+      "object": "5"
+    }
+  ]
+},
 {
-"entities": [
-    {"id": "e1", "type": "Penyakit", "name": "Bercak daun curvularia"},
-    {"id": "e2", "type": "Penyebab", "name": "Curvularia sp."},
-    {"id": "e3", "type": "Penanganan", "name": "Uji patogenisitas"}
-],
-"relations": [
-    {"id": "r1", "subject": "e1", "predicate": "Disebabkan oleh", "object": "e2"},
-    {"id": "r2", "subject": "e1", "predicate": "Ditangani dengan", "object": "e3"}
-]
-}
+  "entities": [
+    {
+      "id": "1",
+      "type": "Penyakit",
+      "name": "Bercak"
+    },
+    {
+      "id": "2",
+      "type": "Penyebab",
+      "name": "Curvularia"
+    },
+    {
+      "id": "3",
+      "type": "Penanganan",
+      "name": "Inokulasi"
+    }
+  ],
+  "relations": [
+    {
+      "id": "r1",
+      "subject": "1",
+      "predicate": "Disebabkan oleh",
+      "object": "2"
+    },
+    {
+      "id": "r2",
+      "subject": "2",
+      "predicate": "Ditangani dengan",
+      "object": "3"
+    }
+  ]
+},
+{
+  "entities": [
+    {
+      "id": "1",
+      "type": "Penyakit",
+      "name": "Bercak Daun"
+    },
+    {
+      "id": "2",
+      "type": "Penyebab",
+      "name": "Curvularia"
+    },
+    {
+      "id": "3",
+      "type": "Penanganan",
+      "name": "Inokulasi"
+    }
+  ],
+  "relations": [
+    {
+      "id": "r1",
+      "subject": "1",
+      "predicate": "Disebabkan oleh",
+      "object": "2"
+    },
+    {
+      "id": "r2",
+      "subject": "3",
+      "predicate": "Ditangani dengan",
+      "object": "1"
+    }
+  ]
+},
+{
+  "entities": [
+    {
+      "id": "1",
+      "type": "Penyakit",
+      "name": "Bercak Daun"
+    },
+    {
+      "id": "2",
+      "type": "Penyebab",
+      "name": "Curvularia"
+    },
+    {
+      "id": "3",
+      "type": "Penanganan",
+      "name": "Brefeldin"
+    },
+    {
+      "id": "4",
+      "type": "Penanganan",
+      "name": "Curvularin"
+    }
+  ],
+  "relations": [
+    {
+      "id": "r1",
+      "subject": "1",
+      "predicate": "Disebabkan oleh",
+      "object": "2"
+    },
+    {
+      "id": "r2",
+      "subject": "2",
+      "predicate": "Mempengaruhi",
+      "object": "1"
+    }
+  ]
+})

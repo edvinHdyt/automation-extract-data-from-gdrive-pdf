@@ -14,8 +14,8 @@ Pipeline untuk mengekstrak Knowledge Graph (Penyakit, Penyebab, Penanganan) dari
 | 2. Baca PDF dengan PyMuPDF (per halaman) | Selesai | Pengganti pdfplumber, kolom tidak lagi bercampur |
 | 3. Buang header/footer | Selesai | Berbasis pengulangan teks antar halaman |
 | 4. Trim awal dan akhir dokumen | Selesai | Potong dari setelah PENDAHULUAN sampai sebelum DAFTAR PUSTAKA |
-| 5. Buang caption gambar/tabel | Perlu diuji | `removeCaptions`; rujukan "(Gambar 1)" di dalam kalimat sengaja dibiarkan |
-| 6. Sambung paragraf terpotong antar halaman | Perlu diuji | `joinBrokenParagraphs` |
+| 5. Buang caption gambar/tabel | Selesai | `removeCaptions`; rujukan "(Gambar 1)" di dalam kalimat sengaja dibiarkan |
+| 6. Sambung paragraf terpotong antar halaman | Selesai | `joinBrokenParagraphs` |
 | 7. Chunking | Belum | Plafon ~3000 karakter, overlap kecil |
 | 8. Prompt few-shot + panggil LLM | Belum | Template sudah dirancang |
 | 9. Parse + validasi JSON per chunk | Belum | |
